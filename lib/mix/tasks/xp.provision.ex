@@ -28,7 +28,7 @@ defmodule Mix.Tasks.Xp.Provision do
 
   @switches [only: :string]
 
-  @all_enhancements "ci,formatter,credo,no_warnings,docs,test"
+  @all_enhancements "ci,credo,no_warnings,formatter,docs,test"
 
   @impl true
   def run(args) do

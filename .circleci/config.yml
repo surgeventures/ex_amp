@@ -11,8 +11,8 @@ jobs:
       - run: mix local.hex --force
       - run: mix local.rebar --force
       - run: mix deps.get
-      - run: mix format --check-formatted
       - run: mix credo
       - run: mix compile --warnings-as-errors
+      - run: mix format --check-formatted
       - run: mix docs
       - run: mix test
