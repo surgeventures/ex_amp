@@ -7,9 +7,9 @@ defmodule Mix.Tasks.Xp.Provision do
   Following enhancements are available:
 
   - `ci` - complete continuous integration setup (uses CircleCI)
-  - `formatter` - check for code being properly formatted
+  - `no_warn` - check for compilation without warnings
+  - `format` - check for code being properly formatted
   - `credo` - complete Credo static code linter setup
-  - `no_warnings` - check for compilation without warnings
   - `docs` - complete ExDoc project documentation setup
   - `test` - check for passing ExUnit test suite
 
@@ -28,7 +28,7 @@ defmodule Mix.Tasks.Xp.Provision do
 
   @switches [only: :string]
 
-  @all_enhancements "ci,credo,no_warnings,formatter,docs,test"
+  @all_enhancements "ci,no_warn,format,credo,docs,test"
 
   @impl true
   def run(args) do
@@ -37,7 +37,8 @@ defmodule Mix.Tasks.Xp.Provision do
     {opts, _} = OptionParser.parse!(args, strict: @switches)
 
     enhancements =
-      Keyword.get(opts, :only, @all_enhancements)
+      opts
+      |> Keyword.get(:only, @all_enhancements)
       |> String.split(",")
       |> Enum.map(&String.to_atom/1)
 
