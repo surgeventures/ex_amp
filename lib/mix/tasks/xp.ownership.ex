@@ -1,5 +1,4 @@
 defmodule Mix.Tasks.Xp.Ownership do
-  @shortdoc "Manages package ownership on Hex as-a-code"
   @moduledoc """
   Manages package ownership on Hex as-a-code.
 
@@ -16,14 +15,15 @@ defmodule Mix.Tasks.Xp.Ownership do
   differences between the ownership file and actual state on Hex (that may be first introspected
   with the `list` command).
 
-      mix xp.ownership apply
+      MIX_API_KEY="<paste key from `mix hex.user key generate`>" mix xp.ownership apply
 
   ## Command line options
 
   * `--file OWNERSHIP_FILE` - The ownership file that should evaluate into a list of `{package_name,
     owner_email}` tuples, defaults to `.ownership.exs`
-
   """
+
+  @shortdoc "Manages package ownership on Hex as-a-code"
 
   use Mix.Task
 
@@ -33,7 +33,7 @@ defmodule Mix.Tasks.Xp.Ownership do
   def run(args) do
     Hex.start()
 
-    {opts, args} = Hex.OptionParser.parse!(args, strict: @switches)
+    {opts, args} = OptionParser.parse!(args, strict: @switches)
 
     case args do
       ["list"] ->

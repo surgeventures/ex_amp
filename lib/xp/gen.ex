@@ -42,7 +42,10 @@ defmodule Xp.Gen do
         dep_string = "{:#{name}, #{inspect(req)}}"
         log_info("Unable to modify project config - please add `#{dep_string}` to deps manually")
 
-      {:ok, _} ->
+      {:ok, :added, _} ->
+        nil
+
+      {:ok, :already_added} ->
         nil
     end
 
