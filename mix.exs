@@ -1,7 +1,7 @@
 defmodule Xp.MixProject do
   use Mix.Project
 
-  @origin_url "https://github.com/user-name/repo-name"
+  @github_url "https://github.com/surgeventures/xp"
 
   def project do
     [
@@ -10,13 +10,13 @@ defmodule Xp.MixProject do
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: "Add description",
-      source_url: @origin_url,
-      homepage_url: @origin_url,
+      description: "Elixir package provisioning & maintenance on steroids",
+      source_url: @github_url,
+      homepage_url: @github_url,
       package: [
         licenses: ["MIT"],
         links: %{
-          "Homepage" => @origin_url
+          "GitHub" => @github_url
         }
       ]
     ]

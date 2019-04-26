@@ -1,5 +1,3 @@
 defmodule Xp do
-  @moduledoc """
-  Elixir package creation & maintenance on steroids.
-  """
+  @moduledoc false
 end

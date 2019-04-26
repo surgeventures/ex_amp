@@ -1,5 +1,5 @@
 defmodule Mix.Tasks.Xp.Gen.Dep do
-  @shortdoc "Generates a new dependency with requirement pointing at latest version"
+  @shortdoc "Generates a new dependency with requirement pointing at latest or specified version"
   @moduledoc @shortdoc
 
   use Mix.Task

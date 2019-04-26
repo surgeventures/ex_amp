@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Xp.Gen.All do
+defmodule Mix.Tasks.Xp.Provision do
   @shortdoc "Provisions Elixir package with all enhancements (CI, linter, tests, docs...)"
   @moduledoc @shortdoc
 
