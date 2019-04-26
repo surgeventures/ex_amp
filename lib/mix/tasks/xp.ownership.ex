@@ -15,7 +15,7 @@ defmodule Mix.Tasks.Xp.Ownership do
   differences between the ownership file and actual state on Hex (that may be first introspected
   with the `list` command).
 
-      MIX_API_KEY="<paste key from `mix hex.user key generate`>" mix xp.ownership apply
+      HEX_API_KEY="<paste key from `mix hex.user key generate`>" mix xp.ownership apply
 
   ## Command line options
 
