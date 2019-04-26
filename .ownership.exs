@@ -1,10 +1,17 @@
-package_managers = ~w[
-  ksluszniak@gmail.com
-  pawel@shedul.com
-  maciej.m@shedul.com
+package_managers = [
+  # leads
+  "ksluszniak@gmail.com",
+  "kowalski.tychy@gmail.com",
+
+  # teams
+  "maciej.m@shedul.com", # spirit
+  "maciej@shedul.com", # zen
+  "marcin.s@shedul.com", # janusze
+  "pawel@shedul.com" # undefined
 ]
 
 packages = ~w[
+  blalblaslda
   confix
   jabbax
   modular

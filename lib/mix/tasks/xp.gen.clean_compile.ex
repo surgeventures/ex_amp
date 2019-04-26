@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Xp.Gen.CleanCompile do
+  @shortdoc "Generates a check for compilation without warnings"
+  @moduledoc @shortdoc
+
   use Mix.Task
 
   @switches []
@@ -9,6 +12,6 @@ defmodule Mix.Tasks.Xp.Gen.CleanCompile do
 
     {_, _} = Hex.OptionParser.parse!(args, strict: @switches)
 
-    Xp.gen_ci_task("mix compile --warnings-as-errors")
+    Xp.Gen.gen_ci_task("mix compile --warnings-as-errors")
   end
 end

@@ -1,7 +1,19 @@
 defmodule Mix.Tasks.Xp.Gen.All do
+  @shortdoc "Provisions Elixir package with all enhancements (CI, linter, tests, docs...)"
+  @moduledoc @shortdoc
+
   use Mix.Task
 
   @switches []
+
+  alias Mix.Tasks.Xp.Gen.{
+    Ci,
+    CleanCompile,
+    Credo,
+    Docs,
+    Formatter,
+    Tests
+  }
 
   @impl true
   def run(args) do
@@ -9,11 +21,11 @@ defmodule Mix.Tasks.Xp.Gen.All do
 
     {_, _} = Hex.OptionParser.parse!(args, strict: @switches)
 
-    Mix.Tasks.Xp.Gen.Ci.run([])
-    Mix.Tasks.Xp.Gen.Formatter.run([])
-    Mix.Tasks.Xp.Gen.Credo.run([])
-    Mix.Tasks.Xp.Gen.CleanCompile.run([])
-    Mix.Tasks.Xp.Gen.Docs.run([])
-    Mix.Tasks.Xp.Gen.Tests.run([])
+    Ci.run([])
+    Formatter.run([])
+    Credo.run([])
+    CleanCompile.run([])
+    Docs.run([])
+    Tests.run([])
   end
 end

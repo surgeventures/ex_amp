@@ -1,85 +1,46 @@
 defmodule Mix.Tasks.Xp.Ownership do
+  @shortdoc "Manages package ownership on Hex as-a-code"
+  @moduledoc """
+  Manages package ownership on Hex as-a-code.
+
+  ## Introspect the ownership list
+
+  Lists all packages and their owners. Presents both owners defined in the ownership file and those
+  already added on Hex. Colors the differences that would be applied with the `apply` command (green
+  - users that will be added on Hex, red - current Hex owners that will be removed).
+
+      mix xp.ownership list
+
+  ## Apply ownership differences on Hex
+
+  Adds or removes owners on Hex according to differences between the ownership file and actual state
+  on Hex (that may be first introspected with the `list` command).
+
+      mix xp.ownership apply
+
+  ## Command line options
+
+  * `--file OWNERSHIP_FILE` - The ownership file that should evaluate into a list of `{package_name,
+    owner_email}` tuples
+
+  """
+
   use Mix.Task
 
-  @switches []
+  @switches [file: :string]
 
   @impl true
   def run(args) do
     Hex.start()
 
-    {_, args} = Hex.OptionParser.parse!(args, strict: @switches)
+    {opts, args} = Hex.OptionParser.parse!(args, strict: @switches)
 
     case args do
       ["list"] ->
-        package_owners = get_package_owners()
-
-        Enum.each(package_owners, fn {package, defined_owners, hex_owners} ->
-          all_owners = (defined_owners ++ hex_owners) |> Enum.uniq() |> Enum.sort()
-          hex_add = defined_owners -- hex_owners
-          hex_remove = hex_owners -- defined_owners
-
-          owners_str =
-            all_owners
-            |> Enum.map(fn owner ->
-              cond do
-                Enum.member?(hex_add, owner) ->
-                  " + " <> owner
-
-                Enum.member?(hex_remove, owner) ->
-                  " - " <> owner
-
-                true ->
-                  "   " <> owner
-              end
-            end)
-            |> Enum.join("\n")
-
-          Mix.shell().info(":#{package}\n#{owners_str}\n")
-        end)
+        Xp.Ownership.list(opts)
 
       ["apply"] ->
-        package_owners = get_package_owners()
-
-        Enum.each(package_owners, fn {package, defined_owners, hex_owners} ->
-          hex_add = defined_owners -- hex_owners
-          hex_remove = hex_owners -- defined_owners
-
-          Enum.each(hex_add, fn owner ->
-            Xp.log(:green, "adding owner", ":#{package} - #{owner}")
-            Mix.Tasks.Hex.Owner.run(["add", to_string(package), owner])
-          end)
-
-          Enum.each(hex_remove, fn owner ->
-            Xp.log(:green, "removing owner", ":#{package} - #{owner}")
-            Mix.Tasks.Hex.Owner.run(["remove", to_string(package), owner])
-          end)
-        end)
-    end
-  end
-
-  defp get_package_owners do
-    {po_list, _} = Code.eval_file(".ownership.exs")
-
-    Enum.reduce(po_list, %{}, fn {package, owner}, acc ->
-      acc
-      |> Map.put_new(package, [])
-      |> Map.update(package, [], &[owner | &1])
-    end)
-    |> Enum.map(fn {package, owners} ->
-      {package, owners, get_hex_package_owners(to_string(package))}
-    end)
-    |> Enum.filter(fn {_, _, hex_owners} -> hex_owners end)
-  end
-
-  defp get_hex_package_owners(package) do
-    auth = Mix.Tasks.Hex.auth_info(:read)
-
-    case Hex.API.Package.Owner.get(nil, package, auth) do
-      {:ok, {code, body, _headers}} when code in 200..299 ->
-        Enum.map(body, & &1["email"])
-
-      _ ->
-        nil
+        Xp.Ownership.apply(opts)
     end
   end
 end

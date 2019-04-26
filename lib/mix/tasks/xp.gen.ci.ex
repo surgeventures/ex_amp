@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Xp.Gen.Ci do
+  @shortdoc "Generates a complete continuous integration setup (uses CircleCI)"
+  @moduledoc @shortdoc
+
   use Mix.Task
 
   @switches []
@@ -9,6 +12,6 @@ defmodule Mix.Tasks.Xp.Gen.Ci do
 
     {_, _} = Hex.OptionParser.parse!(args, strict: @switches)
 
-    Xp.gen_ci_config()
+    Xp.Gen.gen_ci_config()
   end
 end

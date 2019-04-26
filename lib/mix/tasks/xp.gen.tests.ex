@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Xp.Gen.Tests do
+  @shortdoc "Generates a check for passing ExUnit test suite"
+  @moduledoc @shortdoc
+
   use Mix.Task
 
   @switches []
@@ -9,6 +12,6 @@ defmodule Mix.Tasks.Xp.Gen.Tests do
 
     {_, _} = Hex.OptionParser.parse!(args, strict: @switches)
 
-    Xp.gen_ci_task("mix test")
+    Xp.Gen.gen_ci_task("mix test")
   end
 end

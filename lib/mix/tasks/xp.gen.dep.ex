@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Xp.Gen.Dep do
+  @shortdoc "Generates a new dependency with requirement pointing at latest version"
+  @moduledoc @shortdoc
+
   use Mix.Task
 
   @switches []
@@ -11,10 +14,10 @@ defmodule Mix.Tasks.Xp.Gen.Dep do
 
     case args do
       [name] ->
-        Xp.gen_latest_dep(name)
+        Xp.Gen.gen_latest_dep(name)
 
       [name, version] ->
-        Xp.gen_dep({name, version})
+        Xp.Gen.gen_dep({name, version})
     end
   end
 end
