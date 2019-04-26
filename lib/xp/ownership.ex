@@ -19,7 +19,7 @@ defmodule Xp.Ownership do
     {prefix, color} =
       case owner.hex_status do
         :add -> {" + ", :green}
-        :remove -> {" + ", :yellow}
+        :remove -> {" - ", :yellow}
         :update_level -> {" ~ ", :magenta}
         :ok -> {"   ", :reset}
       end
