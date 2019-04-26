@@ -154,7 +154,7 @@ defmodule Xp.Gen do
   jobs:
     build:
       docker:
-        - image: circleci/elixir:1.5
+        - image: circleci/elixir
       environment:
         - MIX_ENV: test
       working_directory: ~/repo
