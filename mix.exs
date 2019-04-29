@@ -10,14 +10,19 @@ defmodule XP.MixProject do
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: "Elixir package provisioning & maintenance on steroids",
-      source_url: @github_url,
-      homepage_url: @github_url,
+      name: "XP",
+      description: "Prepare, release and maintain your Elixir packages like a pro",
       package: [
+        maintainers: ["Karol Słuszniak"],
         licenses: ["MIT"],
         links: %{
           "GitHub" => @github_url
         }
+      ],
+      docs: [
+        main: "readme",
+        source_url: @github_url,
+        extras: ~w[README.md]
       ]
     ]
   end

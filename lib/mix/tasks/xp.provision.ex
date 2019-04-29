@@ -19,6 +19,7 @@ defmodule Mix.Tasks.Xp.Provision do
   ## Command line options
 
   * `--only ci,formatter` - Apply only specific enhancements (defaults to all)
+  * `--except formatter` - Apply all enhancements expect specific ones
   """
 
   @shortdoc "Provisions Elixir package with all or specified enhancements"
@@ -26,7 +27,7 @@ defmodule Mix.Tasks.Xp.Provision do
   use Mix.Task
   import XP.Gen
 
-  @switches [only: :string]
+  @switches [only: :string, except: :string]
 
   @all_enhancements "ci,no_warn,format,credo,docs,test"
 
@@ -36,11 +37,19 @@ defmodule Mix.Tasks.Xp.Provision do
 
     {opts, _} = OptionParser.parse!(args, strict: @switches)
 
-    enhancements =
+    only_enhancements =
       opts
       |> Keyword.get(:only, @all_enhancements)
       |> String.split(",")
       |> Enum.map(&String.to_atom/1)
+
+    except_enhancements =
+      opts
+      |> Keyword.get(:except, "")
+      |> String.split(",")
+      |> Enum.map(&String.to_atom/1)
+
+    enhancements = only_enhancements -- except_enhancements
 
     for e <- enhancements, do: apply(e)
   end
@@ -49,7 +58,7 @@ defmodule Mix.Tasks.Xp.Provision do
     gen_ci_config()
   end
 
-  defp apply(:formatter) do
+  defp apply(:format) do
     gen_formatter_config()
     gen_ci_task("mix format --check-formatted")
   end
@@ -60,7 +69,7 @@ defmodule Mix.Tasks.Xp.Provision do
     gen_ci_task("mix credo")
   end
 
-  defp apply(:no_warnings) do
+  defp apply(:no_warn) do
     gen_ci_task("mix compile --warnings-as-errors")
   end
 

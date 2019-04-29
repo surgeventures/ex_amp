@@ -1,37 +1,40 @@
-# XP
+# `XP`
 
-***Elixir Pragmatic Package Provisioning**. Prepare, release and maintain your Elixir packages like
-a pro. In no time.*
+**Elixir Pragmatic Package Provisioning**: prepare, release and maintain your Elixir packages like a
+pro.
 
 All your code should aim to be top quality, readable, understandable and maintainable throughout its
 entire lifecycle. Elixir ecosystem provides many mature, well-thought tools either built right into
 the language or closely integrated with it. This includes:
 
-- ***compiler** ([mix compile], built-in)* - produces compilation warnings that allow to early
+- **compiler** ([mix compile], built-in) - produces compilation warnings that allow to early
   detect bugs & typos in the code eg. an attempt to call non-existing or deprecated function
 
-- ***code formatter** ([mix format], built-in)* - ensures that all the code follows the same basic
+- **code formatter** ([mix format], built-in) - ensures that all the code follows the same basic
   formatting rules such as maximum number of chars in a line or function indentation
 
-- ***code linter** ([Credo])* - ensures that all the code follows a further established set of
+- **code linter** ([Credo]) - ensures that all the code follows a further established set of
   software design, consistency, readability & misc rules and conventions (still statical)
 
-- ***documentation generator** ([ExDoc])* - produces documentation compilation errors on issues that
+- **documentation generator** ([ExDoc]) - produces documentation compilation errors on issues that
   make it impossible to assemble the docs eg. compilation errors in doc attributes
 
-- ***test runner** ([ExUnit], built-in)* - starts the application in test mode and runs all runtime
+- **test runner** ([ExUnit], built-in) - starts the application in test mode and runs all runtime
   tests against it (defined as test modules or embedded in docs as doctests)
 
 This exhaustive set of tools gives a deep & thorough end-to-end control over code quality, but it
 takes experience to know them and time & effort to set them all up.
 
-XP allows to quickly provision all of these tools in any existing Mix project for instant usage. In
-addition to making them available for local development, XP provides an out-of-the-box CI
-configuration that runs them in the cloud (free for open source), providing an instant & reliable
-indication as to whether released & pull requested code passes the established quality standards.
+XP allows to quickly provision all of these tools in any existing Mix project for instant usage with
+an invocation of just a single task - `mix xp.provision`. In addition to making checks available for
+local development, XP provides an out-of-the-box CI configuration that runs them in the cloud (free
+for open source), providing an instant & reliable indication as to whether released & pull requested
+code passes the established quality standards.
 
-Aside from that, XP provides some additional tasks to make the package provisioning and management
-easier. Check out the docs for the complete list of the tasks.
+There are also following additional tasks available:
+
+- `mix xp.dep` - adds a project dependency with requirement pointing at latest or specified version
+- `mix xp.ownership` - manages package ownership on Hex as-a-code
 
 ## Installation
 
