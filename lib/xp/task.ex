@@ -1,4 +1,4 @@
-defmodule Xp.Task do
+defmodule XP.Task do
   @moduledoc false
 
   defmacro __using__(_) do

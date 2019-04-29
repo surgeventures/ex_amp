@@ -21,6 +21,7 @@ defmodule Mix.Tasks.Xp.Dep do
   @shortdoc "Adds a project dependency with requirement pointing at latest or specified version"
 
   use Mix.Task
+  import XP.Gen
 
   @switches []
 
@@ -32,10 +33,10 @@ defmodule Mix.Tasks.Xp.Dep do
 
     case args do
       [name] ->
-        Xp.Gen.gen_latest_dep(name)
+        gen_latest_dep(name)
 
       [name, version] ->
-        Xp.Gen.gen_dep({name, version})
+        gen_dep({name, version})
     end
   end
 end

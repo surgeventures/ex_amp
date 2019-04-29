@@ -26,6 +26,7 @@ defmodule Mix.Tasks.Xp.Ownership do
   @shortdoc "Manages package ownership on Hex as-a-code"
 
   use Mix.Task
+  alias XP.Ownership
 
   @switches [file: :string]
 
@@ -37,10 +38,10 @@ defmodule Mix.Tasks.Xp.Ownership do
 
     case args do
       ["list"] ->
-        Xp.Ownership.list(opts)
+        Ownership.list(opts)
 
       ["apply"] ->
-        Xp.Ownership.apply(opts)
+        Ownership.apply(opts)
     end
   end
 end

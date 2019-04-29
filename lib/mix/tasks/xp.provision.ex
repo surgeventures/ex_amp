@@ -24,7 +24,7 @@ defmodule Mix.Tasks.Xp.Provision do
   @shortdoc "Provisions Elixir package with all or specified enhancements"
 
   use Mix.Task
-  import Xp.Gen
+  import XP.Gen
 
   @switches [only: :string]
 

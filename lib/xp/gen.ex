@@ -1,7 +1,7 @@
-defmodule Xp.Gen do
+defmodule XP.Gen do
   @moduledoc false
 
-  use Xp.Task
+  use XP.Task
 
   # deps
 

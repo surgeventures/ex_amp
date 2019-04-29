@@ -1,4 +1,4 @@
-defmodule Xp.MixProject do
+defmodule XP.MixProject do
   use Mix.Project
 
   @github_url "https://github.com/surgeventures/xp"
