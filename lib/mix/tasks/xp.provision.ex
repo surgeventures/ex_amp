@@ -56,6 +56,7 @@ defmodule Mix.Tasks.Xp.Provision do
 
   defp apply(:ci) do
     gen_ci_config()
+    gen_readme_badge(:ci)
   end
 
   defp apply(:format) do
@@ -76,7 +77,9 @@ defmodule Mix.Tasks.Xp.Provision do
   defp apply(:docs) do
     gen_latest_dep("ex_doc", only: [:dev, :test])
     gen_ci_task("mix docs")
+    gen_readme()
     gen_license()
+    gen_readme_badge(:license)
   end
 
   defp apply(:test) do

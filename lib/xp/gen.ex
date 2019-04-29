@@ -62,15 +62,17 @@ defmodule XP.Gen do
     |> log_gen_latest_dep_result(name)
   end
 
+  @project_config_path "mix.exs"
+
   def gen_dep_quiet(dep) do
-    mix_path = "mix.exs"
-    content = File.read!(mix_path)
-    lines = String.split(content, "\n")
     dep_name = elem(dep, 0)
     dep_req = elem(dep, 1)
     dep_string = dep |> Macro.escape() |> Macro.to_string()
 
-    with {_, {:ok, deps, last_dep_at, insert_dep_at}} <- {:parse_deps, parse_deps(lines)},
+    with {_, false} <- {:already_added, project_config()[:deps] |> List.keymember?(dep_name, 0)},
+         content = File.read!(@project_config_path),
+         lines = String.split(content, "\n"),
+         {_, {:ok, deps, last_dep_at, insert_dep_at}} <- {:parse_deps, parse_deps(lines)},
          {_, false} <- {:already_added, Enum.member?(deps, dep_name)} do
       lines =
         if last_dep_at do
@@ -85,7 +87,7 @@ defmodule XP.Gen do
         |> Enum.join("\n")
         |> Code.format_string!()
 
-      File.write!(mix_path, new_content)
+      File.write!(@project_config_path, new_content)
 
       {:ok, :added, dep_req}
     else
@@ -202,7 +204,7 @@ defmodule XP.Gen do
   def log_gen_ci_task_result(result, task) do
     case result do
       {:error, :read_config} ->
-        log_error("No CI config - please generate it via `mix xp.gen.ci`")
+        log_error("No CI config - please generate it via `mix xp.provision`")
 
       {:error, :parse_build_steps} ->
         log_error("Unable to modify CI config - please add task `#{task}` manually")
@@ -283,6 +285,151 @@ defmodule XP.Gen do
     create_file(@formatter_config_path, @formatter_config_default)
   end
 
+  # readme
+
+  @readme_path "README.md"
+
+  embed_template(:readme, """
+  # <%= @name %>
+
+  **<%= @description %>**
+
+  <% if @package? do %>
+  ## Installation
+
+  Add `<%= @app %>` to your list of dependencies in `mix.exs`:
+
+  ```elixir
+  def deps do
+    [
+      {:xp, "~> 0.1.0"}
+    ]
+  end
+  ```
+
+  ## Documentation
+
+  The docs can be found at [https://hexdocs.pm/<%= @app %>](https://hexdocs.pm/<%= @app %>).
+  <% end %>
+  """)
+
+  def gen_readme do
+    project_config = Mix.Project.config()
+    app = Keyword.fetch!(project_config, :app)
+    name = Keyword.get(project_config, :name, app)
+    description = Keyword.get(project_config, :description, "TODO: Add description")
+    package? = Keyword.has_key?(project_config, :package)
+
+    unless package? do
+      log_info([:yellow, "No package config - please add `package: [...]` to project config"])
+    end
+
+    readme_content =
+      readme_template(
+        app: app,
+        name: name,
+        description: description,
+        package?: package?
+      )
+
+    create_file(@readme_path, readme_content)
+
+    gen_readme_badge(:license)
+    gen_readme_badge(:hex)
+    gen_readme_badge(:ci)
+  end
+
+  def gen_readme_badge(:license) do
+    if github_repo_path() do
+      repo_path = github_repo_path()
+      image_url = "https://img.shields.io/github/license/#{repo_path}.svg"
+      details_url = "https://github.com/#{repo_path}/blob/master/LICENSE.md"
+      label = "License badge"
+
+      do_gen_readme_badge(image_url, details_url, label)
+    end
+  end
+
+  def gen_readme_badge(:hex) do
+    if package?() do
+      app = Keyword.fetch!(project_config(), :app)
+
+      image_url = "https://img.shields.io/hexpm/v/#{app}.svg"
+      details_url = "https://hex.pm/packages/#{app}"
+      label = "Hex version badge"
+
+      do_gen_readme_badge(image_url, details_url, label)
+    end
+  end
+
+  def gen_readme_badge(:ci) do
+    if ci?() and github_repo_path() do
+      repo_path = github_repo_path()
+      image_url = "https://img.shields.io/circleci/project/github/#{repo_path}/master.svg"
+      details_url = "https://circleci.com/gh/surgeventures/#{repo_path}/tree/master"
+      label = "Build status badge"
+
+      do_gen_readme_badge(image_url, details_url, label)
+    end
+  end
+
+  defp do_gen_readme_badge(image_url, details_url, label) do
+    with {_, {:ok, content}} <- {:read_config, File.read(@readme_path)},
+         lines = String.split(content, "\n"),
+         {_, {:ok, badges, insert_at}} <- {:parse_badges, parse_readme_badges(lines)},
+         {_, false} <- {:already_added, Enum.member?(badges, label)} do
+      badge_text = "[![#{label}](#{image_url})](#{details_url})"
+
+      lines =
+        if insert_at do
+          List.insert_at(lines, insert_at + 1, badge_text)
+        else
+          lines
+          |> List.insert_at(1, "")
+          |> List.insert_at(2, badge_text)
+        end
+
+      new_content = Enum.join(lines, "\n")
+      File.write!(@readme_path, new_content)
+
+      {:ok, :added}
+    else
+      {:already_added, _} -> {:ok, :already_added}
+      {:parse_badges, _} -> {:error, :parse_badges}
+    end
+  end
+
+  defp parse_readme_badges(lines) do
+    lines
+    |> Enum.with_index()
+    |> Enum.reduce(:top, fn
+      {"#" <> _, _}, :top ->
+        :title
+
+      {_, _}, :top ->
+        :error
+
+      {"", _}, :title ->
+        {:badges, [], nil}
+
+      {"[![" <> label_eol, ends_at}, {:badges, badges, _} ->
+        label = label_eol |> String.split("]") |> List.first()
+        {:badges, [label | badges], ends_at}
+
+      {_, _}, {:badges, badges, ends_at} ->
+        {:ok, Enum.reverse(badges), ends_at}
+
+      _, acc ->
+        acc
+    end)
+    |> case do
+      {:ok, _, _} = acc -> acc
+      _ -> :error
+    end
+  end
+
+  # license
+
   @license_path "LICENSE.md"
 
   @license_default """
@@ -307,5 +454,28 @@ defmodule XP.Gen do
 
   def gen_license do
     create_file(@license_path, @license_default)
+  end
+
+  ## project helpers
+
+  defp project_config do
+    Mix.Project.config()
+  end
+
+  defp github_repo_path do
+    source_url = get_in(project_config(), [:docs, :source_url])
+
+    case source_url do
+      "https://github.com/" <> path -> path
+      _ -> nil
+    end
+  end
+
+  defp ci? do
+    File.exists?(@ci_config_path)
+  end
+
+  defp package? do
+    Keyword.has_key?(Mix.Project.config(), :package)
   end
 end

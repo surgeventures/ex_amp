@@ -1,5 +1,9 @@
 # `XP`
 
+[![Build status badge](https://img.shields.io/circleci/project/github/surgeventures/xp/master.svg)](https://circleci.com/gh/surgeventures/surgeventures/xp/tree/master)
+[![License badge](https://img.shields.io/github/license/surgeventures/xp.svg)](https://github.com/surgeventures/xp/blob/master/LICENSE.md)
+[![Hex version badge](https://img.shields.io/hexpm/v/xp.svg)](https://hex.pm/packages/xp)
+
 **Elixir Pragmatic Package Provisioning**: prepare, release and maintain your Elixir packages like a
 pro.
 
