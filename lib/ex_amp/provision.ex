@@ -27,9 +27,8 @@ defmodule ExAmp.Provision do
   def apply(:docs) do
     Deps.add_latest("ex_doc", only: [:dev, :test])
     CI.add_task("mix docs")
-    Readme.gen()
     License.gen()
-    Readme.add_badge(:license)
+    Readme.gen()
   end
 
   def apply(:test) do

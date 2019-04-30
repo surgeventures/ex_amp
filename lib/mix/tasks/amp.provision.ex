@@ -25,10 +25,10 @@ defmodule Mix.Tasks.Amp.Provision do
   takes experience to know them and time & effort to set them all up.
 
   This task allows to quickly provision all of these tools in any existing Mix project for instant
-  usage with an invocation of just a single task - `mix ex_amp.provision`. In addition to making
-  checks available for local development, this task provides an out-of-the-box CI configuration that
-  runs them in the cloud (free for open source), providing an instant & reliable indication as to
-  whether released & pull requested code passes the established quality standards.
+  usage in a single shot. In addition to making checks available for local development, this task
+  provides an out-of-the-box CI configuration that runs them in the cloud (free for open source),
+  providing an instant & reliable indication as to whether released & pull requested code passes the
+  established quality standards.
 
   ## Enhancements
 

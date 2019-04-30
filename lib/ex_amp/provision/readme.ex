@@ -63,7 +63,7 @@ defmodule ExAmp.Provision.Readme do
     if repo_path = Project.github_repo_path() do
       image_url = "https://img.shields.io/github/license/#{repo_path}.svg"
       details_url = "https://github.com/#{repo_path}/blob/master/LICENSE.md"
-      label = "License badge"
+      label = "license"
 
       do_add_badge(image_url, details_url, label)
     end
@@ -75,7 +75,7 @@ defmodule ExAmp.Provision.Readme do
 
       image_url = "https://img.shields.io/hexpm/v/#{app}.svg"
       details_url = "https://hex.pm/packages/#{app}"
-      label = "Hex version badge"
+      label = "Hex version"
 
       do_add_badge(image_url, details_url, label)
     end
@@ -83,16 +83,18 @@ defmodule ExAmp.Provision.Readme do
 
   def add_badge(:ci) do
     with true <- CI.present?(),
-         repo_path <- Project.github_repo_path() do
+         repo_path when not is_nil(repo_path) <- Project.github_repo_path() do
       image_url = "https://img.shields.io/circleci/project/github/#{repo_path}/master.svg"
       details_url = "https://circleci.com/gh/surgeventures/#{repo_path}/tree/master"
-      label = "Build status badge"
+      label = "build status"
 
       do_add_badge(image_url, details_url, label)
     end
   end
 
   defp do_add_badge(image_url, details_url, label) do
+    log_step(:green, "adding readme badge", label)
+
     with {_, {:ok, content}} <- {:read_config, File.read(@path)},
          lines = String.split(content, "\n"),
          {_, {:ok, badges, insert_at}} <- {:parse_badges, parse_badges(lines)},
@@ -115,6 +117,13 @@ defmodule ExAmp.Provision.Readme do
     else
       {:already_added, _} -> {:ok, :already_added}
       {:parse_badges, _} -> {:error, :parse_badges}
+    end
+    |> case do
+      {:error, :parse_badges} ->
+        log_error("Unable to modify readme - please add #{label} manually")
+
+      _ ->
+        nil
     end
   end
 

@@ -1,8 +1,8 @@
 # ExAmp
 
-[![License badge](https://img.shields.io/github/license/surgeventures/ex_amp.svg)](https://github.com/surgeventures/ex_amp/blob/master/LICENSE.md)
-[![Build status badge](https://img.shields.io/circleci/project/github/surgeventures/ex_amp/master.svg)](https://circleci.com/gh/surgeventures/surgeventures/ex_amp/tree/master)
-[![Hex version badge](https://img.shields.io/hexpm/v/ex_amp.svg)](https://hex.pm/packages/ex_amp)
+[![license](https://img.shields.io/github/license/surgeventures/ex-amp.svg)](https://github.com/surgeventures/ex-amp/blob/master/LICENSE.md)
+[![build status](https://img.shields.io/circleci/project/github/surgeventures/ex-amp/master.svg)](https://circleci.com/gh/surgeventures/surgeventures/ex-amp/tree/master)
+[![Hex version](https://img.shields.io/hexpm/v/ex_amp.svg)](https://hex.pm/packages/ex_amp)
 
 **Elixir Project Amplifier**: supercharge your Elixir project setup and maintenance.
 
@@ -47,10 +47,16 @@ This exhaustive set of tools gives a deep & thorough end-to-end control over cod
 takes experience to know them and time & effort to set them all up.
 
 This task allows to quickly provision all of these tools in any existing Mix project for instant
-usage with an invocation of just a single task - `mix ex_amp.provision`. In addition to making
-checks available for local development, this task provides an out-of-the-box CI configuration that
-runs them in the cloud (free for open source), providing an instant & reliable indication as to
-whether released & pull requested code passes the established quality standards.
+usage in a single shot. In addition to making checks available for local development, this task
+provides an out-of-the-box CI configuration that runs them in the cloud (free for open source),
+providing an instant & reliable indication as to whether released & pull requested code passes the
+established quality standards.
+
+[mix compile]: https://hexdocs.pm/mix/Mix.Tasks.Compile.Elixir.html
+[mix format]: https://hexdocs.pm/mix/master/Mix.Tasks.Format.html
+[Credo]: https://hexdocs.pm/credo
+[ExDoc]: https://hexdocs.pm/ex_doc
+[ExUnit]: https://hexdocs.pm/ex_unit
 
 ### `mix amp.deps.add`
 
