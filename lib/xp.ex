@@ -1,3 +1,3 @@
-defmodule Xp do
+defmodule ExAmp do
   @moduledoc false
 end

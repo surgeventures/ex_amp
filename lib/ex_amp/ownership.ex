@@ -1,7 +1,7 @@
-defmodule XP.Ownership do
+defmodule ExAmp.Ownership do
   @moduledoc false
 
-  use XP.Task
+  use ExAmp.Task
 
   @default_ownership_file ".ownership.exs"
 

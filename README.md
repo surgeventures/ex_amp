@@ -1,15 +1,32 @@
-# `XP`
+# ExAmp
 
-[![Build status badge](https://img.shields.io/circleci/project/github/surgeventures/xp/master.svg)](https://circleci.com/gh/surgeventures/surgeventures/xp/tree/master)
-[![License badge](https://img.shields.io/github/license/surgeventures/xp.svg)](https://github.com/surgeventures/xp/blob/master/LICENSE.md)
-[![Hex version badge](https://img.shields.io/hexpm/v/xp.svg)](https://hex.pm/packages/xp)
+[![License badge](https://img.shields.io/github/license/surgeventures/ex_amp.svg)](https://github.com/surgeventures/ex_amp/blob/master/LICENSE.md)
+[![Build status badge](https://img.shields.io/circleci/project/github/surgeventures/ex_amp/master.svg)](https://circleci.com/gh/surgeventures/surgeventures/ex_amp/tree/master)
+[![Hex version badge](https://img.shields.io/hexpm/v/ex_amp.svg)](https://hex.pm/packages/ex_amp)
 
-**Elixir Pragmatic Package Provisioning**: prepare, release and maintain your Elixir packages like a
-pro.
+**Elixir Project Amplifier**: supercharge your Elixir project setup and maintenance.
 
-All your code should aim to be top quality, readable, understandable and maintainable throughout its
-entire lifecycle. Elixir ecosystem provides many mature, well-thought tools either built right into
-the language or closely integrated with it. This includes:
+## Installation
+
+Add `ex_amp` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:ex_amp, "~> 0.1.0"}
+  ]
+end
+```
+
+## Usage
+
+### `mix amp.provision`
+
+*Provisions Elixir package with all or specified enhancements.*
+
+All your code should aim to be top quality, readable, understandable and maintainable throughout
+its entire lifecycle. Elixir ecosystem provides many mature, well-thought tools either built right
+into the language or closely integrated with it. This includes:
 
 - **compiler** ([mix compile], built-in) - produces compilation warnings that allow to early
   detect bugs & typos in the code eg. an attempt to call non-existing or deprecated function
@@ -29,35 +46,38 @@ the language or closely integrated with it. This includes:
 This exhaustive set of tools gives a deep & thorough end-to-end control over code quality, but it
 takes experience to know them and time & effort to set them all up.
 
-XP allows to quickly provision all of these tools in any existing Mix project for instant usage with
-an invocation of just a single task - `mix xp.provision`. In addition to making checks available for
-local development, XP provides an out-of-the-box CI configuration that runs them in the cloud (free
-for open source), providing an instant & reliable indication as to whether released & pull requested
-code passes the established quality standards.
+This task allows to quickly provision all of these tools in any existing Mix project for instant
+usage with an invocation of just a single task - `mix ex_amp.provision`. In addition to making
+checks available for local development, this task provides an out-of-the-box CI configuration that
+runs them in the cloud (free for open source), providing an instant & reliable indication as to
+whether released & pull requested code passes the established quality standards.
 
-There are also following additional tasks available:
+### `mix amp.deps.add`
 
-- `mix xp.dep` - adds a project dependency with requirement pointing at latest or specified version
-- `mix xp.ownership` - manages package ownership on Hex as-a-code
+*Adds latest version(s) of specified dep(s) to the project.*
 
-## Installation
+Adding dependencies to Elixir project comes down to a simple task of inserting a tuple with package
+name and semantic version requirement string to the project configuration. Usually though, you'll
+want to add latest version of Hex package to the project and allow non-breaking changes. This
+requires checking the latest versions on Hex and manually adding the requirements. Such process can
+get time consuming especially when adding multiple deps.
 
-Add `xp` to your list of dependencies in `mix.exs`:
+This task automates the whole process and allows quick (amd possibly batch) addition of deps to the
+project.
 
-```elixir
-def deps do
-  [
-    {:xp, "~> 0.1.0"}
-  ]
-end
-```
+### `mix amp.ownership`
+
+*Manages package ownership on Hex as a code.*
+
+When the organization active with Elixir open source releases on Hex grows with more maintainers and
+growing number of packages, it may become a time consuming and error prone task to manage the
+package ownership. This task solves this problem by allowing to manage the ownership as a code.
+
+*Ownership file* serves the purpose of the source of truth. It should be a valid Elixir script that
+should evaluate into a list of `{package_name, owner_email}` tuples and it defaults to
+`.ownership.exs`.
 
 ## Documentation
 
-The docs can be found at [https://hexdocs.pm/xp](https://hexdocs.pm/xp).
-
-[mix compile]: https://hexdocs.pm/mix/Mix.Tasks.Compile.Elixir.html
-[mix format]: https://hexdocs.pm/mix/master/Mix.Tasks.Format.html
-[Credo]: https://hexdocs.pm/credo
-[ExDoc]: https://hexdocs.pm/ex_doc
-[ExUnit]: https://hexdocs.pm/ex_unit
+The docs can be found at [https://hexdocs.pm/ex_amp](https://hexdocs.pm/ex_amp). You can also access
+the complete usage information of each task by invoking `mix help <task>`.

@@ -1,16 +1,16 @@
-defmodule XP.MixProject do
+defmodule ExAmp.MixProject do
   use Mix.Project
 
-  @github_url "https://github.com/surgeventures/xp"
+  @github_url "https://github.com/surgeventures/ex-amp"
 
   def project do
     [
-      app: :xp,
+      app: :ex_amp,
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      name: "XP",
+      name: "ExAmp",
       description: "Prepare, release and maintain your Elixir packages like a pro",
       package: [
         maintainers: ["Karol Słuszniak"],
@@ -35,7 +35,7 @@ defmodule XP.MixProject do
 
   defp deps do
     [
-      {:credo, "~> 1.0.5"},
+      {:credo, "~> 1.0.5", [only: [:dev, :test]]},
       {:ex_doc, "~> 0.20.2", [only: [:dev, :test]]}
     ]
   end
